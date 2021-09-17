@@ -16,11 +16,11 @@ public class Database {
     private static List<User> users = new ArrayList<>(20);
 
     private Database(){
-
+        initDatabase();
     }
 
     public static Database getInstance(){
-        if(database == null) initDatabase();
+        if(database == null) database = new Database();
        return database;
     }
 

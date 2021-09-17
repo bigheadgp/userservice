@@ -12,28 +12,27 @@ public class UserService {
   public void changeEmail(int userId, String newEmail) {
 
     CompanyDao companyDao = new CompanyDao();
-    User previousUser = companyDao.findUserById(userId);
+    User user = companyDao.findUserById(userId);
 
-    Company company = companyDao.findCompanyById(previousUser.getCompanyId());
+    Company company = companyDao.findCompanyById(user.getCompanyId());
     String companyDomain = company.getCompanyDomain();
 
-    User emailChangedUser = previousUser.clone();
+    companyDao.changeEmail(user, newEmail);
 
-    emailChangedUser.changeEmail(newEmail);
-    companyDao.saveUser(emailChangedUser);
     // If the user’s email belongs to the company’s domain, that user is marked as an
     // employee. Otherwise, they are treated as a customer
-    decisionUserType(newEmail, emailChangedUser, companyDomain);
+    decisionUserType(newEmail, user, companyDomain);
 
     // The system must track the number of employees in the company. If the user’s
     // type changes from employee to customer, or vice versa, this number must
     // change, too
-    company.trackNumberOfEmployees(emailChangedUser);
+    int numberOfEmployees = company.trackNumberOfEmployees(user);
 
     // When the email changes, the system must notify external systems by sending a
     // message to a message bus
-    String message = null;
-    sendMessageToMessageBus(message);
+    MessageBus messageBus = new MessageBus();
+    String message = "Email changed successfully, number of employees is " + numberOfEmployees;
+    messageBus.sendMessageToMessageBus(message);
 
   }
 
@@ -43,10 +42,8 @@ public class UserService {
   }
 
   private boolean isEmailWithCompanyDomain(String newEmail, String companyDomain) {
-    String domainOfNewEmail = newEmail.substring(newEmail.indexOf('@'));
+    String domainOfNewEmail = newEmail.substring(newEmail.indexOf('@') + 1);
     return companyDomain.equalsIgnoreCase(domainOfNewEmail);
   }
-
-  public void sendMessageToMessageBus(String message) {}
 
 }

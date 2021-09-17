@@ -8,7 +8,12 @@ import java.util.List;
  */
 public class CompanyDao {
 
-    private static Database database = Database.getInstance();
+    private static Database database ;
+
+
+    public CompanyDao(){
+        database = Database.getInstance();
+    }
 
     public Company findCompanyById(int companyId){
 
@@ -27,6 +32,11 @@ public class CompanyDao {
 
     public User findUserById(int userId) {
         return database.selectUserByUserId(userId);
+    }
+
+    public void changeEmail(User user, String newEmail){
+        user.setEmail(newEmail);
+        saveUser(user);
     }
 
     public void saveUser(User user) {

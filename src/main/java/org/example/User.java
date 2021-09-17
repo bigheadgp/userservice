@@ -4,7 +4,7 @@ package org.example;
  * @Author: pguo
  * @Date: 2021/9/17 16:03
  */
-public class User {
+public class User{
 
     private int userId;
     private String email;
@@ -22,6 +22,13 @@ public class User {
         this.email = email;
         this.userType = userType;
         this.companyId = companyId;
+    }
+
+    public User(User user){
+        this.userId = user.getUserId();
+        this.email = user.getEmail();
+        this.companyId = user.getCompanyId();
+        this.userType = user.getUserType();
     }
 
     public int getUserId() {
@@ -48,11 +55,6 @@ public class User {
         this.userType = userType;
     }
 
-
-    public void changeEmail(String newEmail) {
-        this.email = newEmail;
-    }
-
     public int getCompanyId() {
         return companyId;
     }
@@ -61,11 +63,16 @@ public class User {
         this.companyId = companyId;
     }
 
-    public User clone(){
-        return  new User(this.userId, this.email, this.userType, this.companyId);
-    }
 
+//    public User clone(){
+//        return  new User(this.userId, this.email, this.userType, this.companyId);
+//    }
 
+//
+//    @Override
+//    protected Object clone() throws CloneNotSupportedException {
+//        return super.clone();
+//    }
 
     @Override
     public boolean equals(Object o) {

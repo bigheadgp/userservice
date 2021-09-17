@@ -33,8 +33,8 @@ public class Company {
 
 
     public void separateUsersByType(List<User> users){
-        employees = users.stream().filter(user -> user.getUserType().equals(User.UserType.EMPLOYEE)).collect(Collectors.toSet());
-        customers = users.stream().filter(user -> user.getUserType().equals(User.UserType.CUSTOMER)).collect(Collectors.toSet());
+        employees = users.stream().filter(user -> user.getUserType().equals(User.UserType.EMPLOYEE)).map(User::new).collect(Collectors.toSet());
+        customers = users.stream().filter(user -> user.getUserType().equals(User.UserType.CUSTOMER)).map(User::new).collect(Collectors.toSet());
     }
 
 
